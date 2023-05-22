@@ -7,9 +7,6 @@ export const getListLocation =  (req, res) => {
       if (error) {
         return res.status(403).json({ messages: "Forbidden1", error });
       }
-
-      
-
       // console.log(ghep);
       return res.send({
         status: 200,
