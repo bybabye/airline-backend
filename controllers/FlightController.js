@@ -126,7 +126,7 @@ export const addAutomatic = (req, res) => { // add nhanh chuyến bay
       const permutations = calculatePermutations(masanbay, k);
 
       for (const permutation of permutations) {
-<<<<<<< HEAD
+
         const q = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi,available_seats,price)
         VALUES ('${uuidv4()}','${permutation[0]}', '${permutation[1]}' ,'2023-05-23 22:00' ,40,'1233000');`;
           pool.query(q, (error, results) => {
@@ -135,7 +135,7 @@ export const addAutomatic = (req, res) => { // add nhanh chuyến bay
             }
           });
       }
-=======
+
         const q = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi)
         VALUES ('${uuidv4()}','${permutation[0]}', '${permutation[1]}' ,'2023-05-23 22:00' );`;
         pool.query(q, (error, results) => {
@@ -143,11 +143,11 @@ export const addAutomatic = (req, res) => { // add nhanh chuyến bay
             console.log(error);
           }
         });
-      }
+      
 
 
 
->>>>>>> 3a601ac94d6c5f92a9341dd27c09b2794ea36f4f
+
       return res.send({
         status: 200,
         data: "success",
