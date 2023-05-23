@@ -136,14 +136,7 @@ export const addAutomatic = (req, res) => { // add nhanh chuyến bay
           });
       }
 
-        const q = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi)
-        VALUES ('${uuidv4()}','${permutation[0]}', '${permutation[1]}' ,'2023-05-23 22:00' );`;
-        pool.query(q, (error, results) => {
-          if (error) {
-            console.log(error);
-          }
-        });
-      
+        
 
 
 
