@@ -1,7 +1,7 @@
 import pool from "../database/connect.js";
 import { v4 as uuidv4 } from 'uuid';
 export const getListLocation =  (req, res) => {
-  const query = `SELECT * from sanbay`;
+  const query = `SELECT masanbay,tinh from sanbay`;
   try {
       pool.query(query, (error, results) => {
       if (error) {

@@ -81,17 +81,14 @@ export const addAutomatic = (req,res) => { // add nhanh chuyến bay
       const permutations = calculatePermutations(masanbay, k);
  
       for (const permutation of permutations) {
-        const q = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi)
-        VALUES ('${uuidv4()}','${permutation[0]}', '${permutation[1]}' ,'2023-05-23 22:00' );`;
+        const q = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi,available_seats,price)
+        VALUES ('${uuidv4()}','${permutation[0]}', '${permutation[1]}' ,'2023-05-23 22:00' ,40,'1233000');`;
           pool.query(q, (error, results) => {
             if (error) {
               console.log(error);
             }
           });
       }
-   
-     
-   
       return res.send({
         status: 200,
         data: "success",
