@@ -39,7 +39,7 @@ export const searchFlight = (req, res) => {
   địa điểm : location (L)
   * */
   const query = `
-     SELECT F.macb AS id,F.giodi AS Departure_Time , F.available_seats ,F.giodi + INTERVAL '110 minutes' AS Arrival_Time,
+     SELECT F.macb AS id,F.giodi AS Departure_Time , F.available_seats,F.price ,F.giodi + INTERVAL '110 minutes' AS Arrival_Time,
      D.tensanbay AS Departure_Airport, D.tinh AS Departure_Province,
      A.tensanbay AS Arrival_Airport, A.tinh AS Arrival_Province
      FROM chuyenbay F
@@ -128,7 +128,7 @@ export const addAutomatic = (req, res) => { // add nhanh chuyến bay
       for (const permutation of permutations) {
 
         const q = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi,available_seats,price)
-        VALUES ('${uuidv4()}','${permutation[0]}', '${permutation[1]}' ,'2023-05-23 22:00' ,40,'1233000');`;
+        VALUES ('${uuidv4()}','${permutation[0]}', '${permutation[1]}' ,'2023-05-25 15:00' ,40,'1320000');`;
           pool.query(q, (error, results) => {
             if (error) {
               console.log(error);
