@@ -39,7 +39,7 @@ export const searchFlight = (req, res) => {
   địa điểm : location (L)
   * */
   const query = `
-     SELECT F.macb AS id,F.giodi AS Departure_Time , F.available_seats,F.price ,F.giodi + INTERVAL '110 minutes' AS Arrival_Time,
+     SELECT F.macb AS id,F.giodi AS Departure_Time  , F.masbdi AS  Departure_Airport_id,F.masbden AS  Arrival_Airport_id, F.available_seats,F.price ,F.giodi + INTERVAL '110 minutes' AS Arrival_Time,
      D.tensanbay AS Departure_Airport, D.tinh AS Departure_Province,
      A.tensanbay AS Arrival_Airport, A.tinh AS Arrival_Province
      FROM chuyenbay F
