@@ -1,5 +1,22 @@
 import pool from "../database/connect.js";
 import { v4 as uuidv4 } from 'uuid';
+
+
+
+function generateRandomString() {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const length = 6;
+  let randomString = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
+}
+
+
 export const addFlight = (req, res) => { // thêm mới chuyến bay dành cho admin
   const data = req.body; // lấy dữ liệU từ client gửi về
   const query = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi) VALUES ('${uuidv4()}','${data.start}','${data.end}','2023-05-21 11:30')`;
@@ -89,7 +106,8 @@ export const updateAvailableSeats =  (id,datcho) => {
  */
 export const addAvaibleSeat = (req, res) => { // thêm mới chuyến bay dành cho admin
   const data = req.body; // lấy dữ liệU từ client gửi về
-  const query = `INSERT INTO datcho (madc,makh,macb) VALUES ('${uuidv4()}','${data.makh}','${data.macb}')`;
+  const code = generateRandomString();
+  const query = `INSERT INTO datcho (madc,makh,macb,code) VALUES ('${uuidv4()}','${data.makh}','${data.macb}','${code}')`;
   console.log(query);
   try {
     pool.query(query, (error, results) => {
@@ -101,7 +119,7 @@ export const addAvaibleSeat = (req, res) => { // thêm mới chuyến bay dành 
       // console.log(ghep);
       return res.send({
         status: 200,
-        data: "success",
+        data: code,
       });
     });
   } catch (error) {
@@ -135,11 +153,6 @@ export const addAutomatic = (req, res) => { // add nhanh chuyến bay
             }
           });
       }
-
-        
-
-
-
 
       return res.send({
         status: 200,

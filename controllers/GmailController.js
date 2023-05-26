@@ -7,18 +7,6 @@ function generateRandomNumber() {
   const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
   return randomNumber.toString();
 }
-function generateRandomString() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  const length = 6;
-  let randomString = '';
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    randomString += characters.charAt(randomIndex);
-  }
-
-  return randomString;
-}
 
 /**
  * send
@@ -50,7 +38,7 @@ export const sendGmailAuthencation = async (req, res) => {
     let info = await transporter.sendMail({
       from: "Airline", // sender address
       to: `${data.gmail}`, // list of receivers
-      subject: `${code} là Mã khôi phục của bạn`, // Subject line
+      subject: `${code} là Mã xác nhận của bạn`, // Subject line
       text: "hihi", // plain text body
       html: html, // html body
     });
@@ -65,8 +53,8 @@ export const sendGmailAuthencation = async (req, res) => {
 /**
  * send
  * {
- *  
- *  email : '',
+ *
+ *  gmail : '',
  *  sbdi : '',
  *  sbden: '',
  *  giodi : '',
@@ -75,23 +63,54 @@ export const sendGmailAuthencation = async (req, res) => {
  * }
  */
 // time di voi time den
-export const SendMailBuyTicket = async (req, res)  => {
+export const SendMailBuyTicket = async (req, res) => {
   const data = req.body;
-  const [ngaydi, giodi] = data.giodi.split(" ");
-  const [ngayden, gioden] = data.gioden.split(" ");
-  const code = generateRandomString();
-  const html = `<div class="nH qY"><div><div class="qQ" tabindex="0" 
-  jslog="72185; u014N:xr6bB; 7:WzIyLDMsIkZMSUdIVF9SRVNFUlZBVElPTiJd; 
-  33:WzJd"><div class="t0"><div><div class="t1">${data.sbdi} đến ${data.sbden} – VJ 504</div><div class="t2">${data.giodi}–${data.gioden} ${data.ngaydi}</div>
-  </div><div class="amE"></div></div><div class="tZ"><div class="y7 ">
-  <div class="tk"><div class="tl yH"></div><div class="tg t3">
-  <div class="vL">Cất cánh</div><div class="vU">${giodi} ${ngaydi}</div></div></div>
-  <div class="tk"><div class="tl yG"></div><div class="tg t3">
-  <div class="vL">Hạ cánh</div><div class="vU">${gioden} ${ngayden}</div>
-  </div></div><div class="tk"><div class="tl tA"></div><div class="tg "><div class="vL">Thời gian bay</div>
-  <div class="vU">${data.giobay}</div></div></div><div class="tk"><div class="tl tB"></div><div class="tg ">
-  <div class="vL">Mã xác nhận</div><div class="vU">${code}</div></div></div></div></div></div></div></div>`
+ 
+  const code = req.body.code;
 
+  const giodiDate = new Date(data.giodi);
+  const formattedgiodiTime = giodiDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+// Format the date to 'Day, DD Month YYYY' format
+  const formattedgiodiDate = giodiDate.toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+
+  const giodenDate = new Date(data.gioden);
+  const formattedgiodenTime = giodenDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+// Format the date to 'Day, DD Month YYYY' format
+  const formattedgiodenDate = giodenDate.toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+  const html = `<body>
+  <div class="container" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+    <table class="flight-section" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 3px; width: 100%;">
+      <tr>
+        <td colspan="2" class="flight-info" style="font-size: 18px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">${data.sbdi} arrive ${data.sbden} - ${code}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="flight-time" style="font-size: 16px; color: #777; margin-bottom: 20px;">${formattedgiodiTime }, ${formattedgiodiDate} - ${formattedgiodenTime} , ${formattedgiodenDate}</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="icon-text" style="margin-right: 5px;">🛫 Cất cánh</div>
+          <div class="icon-text" style="margin-right: 5px; margin-top: 10px;"> ${data.sbdi} (${data.masbdi}) </div>
+          <p id="departure-time" style="font-size: 16px; color: #333; margin-bottom: 5px;">${formattedgiodiTime }, ${formattedgiodiDate}</p>
+        </td>
+        <td class="icon-text" style="margin-right: 5px;"> ⏰ Thời gian bay
+          <p id="flight-duration" style="font-size: 16px; color: #333; margin-bottom: 5px;">${data.giobay}</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="icon-text" style="margin-right: 5px;">🛬 Hạ cánh
+          <div class="icon-text" style="margin-right: 5px; margin-top: 10px;"> ${data.sbden} (${data.masbden})</div>
+          <p id="arrival-time" style="font-size: 16px; color: #333; margin-bottom: 5px;">${formattedgiodenTime} , ${formattedgiodenDate}</p>
+        </td>
+        <td class="icon-text" style="margin-right: 5px;">✅ Mã xác nhận 
+          <p id="confirmation-code" style="font-size: 16px; color: #333; margin-bottom: 5px;">${code}</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>`;
 
   try {
     let transporter = nodemailer.createTransport({
@@ -109,9 +128,9 @@ export const SendMailBuyTicket = async (req, res)  => {
       html: html, // html body
     });
 
-    return res.send({ code: code ,id: info.id});
+    return res.send({ code: code, id: info.id });
   } catch (error) {
     console.log(error);
     return res.status(403).json({ messages: "Forbidden2" });
   }
-}
+};
