@@ -89,10 +89,10 @@ export const searchFlight = (req, res) => {
   Ex : UPDATE flight SET available_seats = available_seats + 1 WHERE id = 123;
 
 */
-export const updateAvailableSeats =  (id,datcho) => {
+export const updateAvailableSeats = async  (id,datcho) => {
   const query = `UPDATE chuyenbay SET available_seats = available_seats ${datcho ? '- 1' : '+ 1'} WHERE macb = '${id}'`;
   console.log(query);
-   pool.query(query, (error, results) => {
+ await   pool.query(query, (error, results) => {
     if (error) {
       console.log(error);
     }
@@ -106,15 +106,15 @@ export const updateAvailableSeats =  (id,datcho) => {
 export const addAvaibleSeat = (req, res) => { // thêm mới chuyến bay dành cho admin
   const data = req.body; // lấy dữ liệU từ client gửi về
   const code = generateRandomString();
-  const query = `INSERT INTO datcho (madc,makh,macb,code) VALUES ('${uuidv4()}','${data.makh}','${data.macb}','${code}')`;
+  const query = `INSERT INTO datcho (madc,makh,macb,code) VALUES ('${uuidv4()}','${data.cmnd}','${data.macb}','${code}')`;
   console.log(query);
   try {
-    pool.query(query, (error, results) => {
+    pool.query(query, async (error, results)  => {
       if (error) {
         console.log(error);
         return res.status(403).json({ messages: "Forbidden1", error });
       }
-      updateAvailableSeats(data.macb,1);
+       await updateAvailableSeats(data.macb,1);
       // console.log(ghep);
       return res.send({
         status: 200,
