@@ -21,7 +21,7 @@ export const sendGmailAuthencation = async (req, res) => {
   const html = `<td><span style="font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:16px;line-height:21px;color:#141823">
 <span style="font-size:15px"><span><p></p><div style="margin-top:16px;margin-bottom:20px">Xin chào ${data.name},
 </div>
-<div>Chúng tôi gửi bạn mã xác nhận từ email của hãng của từ hãng bay.
+<div>Chúng tôi gửi bạn mã xác nhận từ email của bạn từ hãng bay Airline Esport.
 </div>Nhập mã xác nhận của bạn sau đây:<p></p><table border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:max-content;margin-top:20px;margin-bottom:20px"><tbody><tr><td style="font-size:11px;font-family:LucidaGrande,tahoma,verdana,arial,sans-serif;padding:14px 32px 14px 32px;background-color:#f2f2f2;border-left:1px solid #ccc;border-right:1px solid #ccc;border-top:1px solid #ccc;border-bottom:1px solid #ccc;text-align:center;border-radius:7px;display:block;border:1px solid #1877f2;background:#e7f3ff">
 <span style="font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:16px;line-height:21px;color:#141823"><span style="font-size:17px;font-family:Roboto;font-weight:700;margin-left:0px;margin-right:0px">${code}</span>
 </span></td></tr></tbody></table></span><table border="0" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse"><tbody><tr><td height="20" style="line-height:20px">&nbsp;</td></tr><tr><td align="middle">
