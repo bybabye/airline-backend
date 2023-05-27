@@ -95,7 +95,6 @@ export const updateAvailableSeats =  (id,datcho) => {
    pool.query(query, (error, results) => {
     if (error) {
       console.log(error);
-      
     }
     return "success";
   });
