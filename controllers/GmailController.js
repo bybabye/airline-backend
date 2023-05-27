@@ -15,6 +15,7 @@ function generateRandomNumber() {
  *  email : '',
  * }
  */
+
 export const sendGmailAuthencation = async (req, res) => {
   const code = generateRandomNumber();
   const data = req.body;
@@ -65,20 +66,36 @@ export const sendGmailAuthencation = async (req, res) => {
 // time di voi time den
 export const SendMailBuyTicket = async (req, res) => {
   const data = req.body;
- 
+
   const code = req.body.code;
 
   const giodiDate = new Date(data.giodi);
-  const formattedgiodiTime = giodiDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const formattedgiodiTime = giodiDate.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-// Format the date to 'Day, DD Month YYYY' format
-  const formattedgiodiDate = giodiDate.toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+  // Format the date to 'Day, DD Month YYYY' format
+  const formattedgiodiDate = giodiDate.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
   const giodenDate = new Date(data.gioden);
-  const formattedgiodenTime = giodenDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const formattedgiodenTime = giodenDate.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-// Format the date to 'Day, DD Month YYYY' format
-  const formattedgiodenDate = giodenDate.toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+  // Format the date to 'Day, DD Month YYYY' format
+  const formattedgiodenDate = giodenDate.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
   const html = `<body>
   <div class="container" style="max-width: 800px; margin: 0 auto; padding: 20px;">
     <table class="flight-section" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 3px; width: 100%;">
@@ -86,13 +103,13 @@ export const SendMailBuyTicket = async (req, res) => {
         <td colspan="2" class="flight-info" style="font-size: 18px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">${data.sbdi} arrive ${data.sbden} - ${code}</td>
       </tr>
       <tr>
-        <td colspan="2" class="flight-time" style="font-size: 16px; color: #777; margin-bottom: 20px;">${formattedgiodiTime }, ${formattedgiodiDate} - ${formattedgiodenTime} , ${formattedgiodenDate}</td>
+        <td colspan="2" class="flight-time" style="font-size: 16px; color: #777; margin-bottom: 20px;">${formattedgiodiTime}, ${formattedgiodiDate} - ${formattedgiodenTime} , ${formattedgiodenDate}</td>
       </tr>
       <tr>
         <td>
           <div class="icon-text" style="margin-right: 5px;">🛫 Cất cánh</div>
           <div class="icon-text" style="margin-right: 5px; margin-top: 10px;"> ${data.sbdi} (${data.masbdi}) </div>
-          <p id="departure-time" style="font-size: 16px; color: #333; margin-bottom: 5px;">${formattedgiodiTime }, ${formattedgiodiDate}</p>
+          <p id="departure-time" style="font-size: 16px; color: #333; margin-bottom: 5px;">${formattedgiodiTime}, ${formattedgiodiDate}</p>
         </td>
         <td class="icon-text" style="margin-right: 5px;"> ⏰ Thời gian bay
           <p id="flight-duration" style="font-size: 16px; color: #333; margin-bottom: 5px;">${data.giobay}</p>
@@ -132,5 +149,98 @@ export const SendMailBuyTicket = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(403).json({ messages: "Forbidden2" });
+  }
+};
+//
+
+export const sentMailBuyTicketFunction = async (
+  code,
+  giodi,
+  gioden,
+  sbdi,
+  masbdi,
+  sbden,
+  masbden,
+  gmail
+) => {
+  const giodiDate = new Date(giodi);
+  const formattedgiodiTime = giodiDate.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // Format the date to 'Day, DD Month YYYY' format
+  const formattedgiodiDate = giodiDate.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  const giodenDate = new Date(gioden);
+  const formattedgiodenTime = giodenDate.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // Format the date to 'Day, DD Month YYYY' format
+  const formattedgiodenDate = giodenDate.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+  const html = `<body>
+  <div class="container" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+    <table class="flight-section" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 3px; width: 100%;">
+      <tr>
+        <td colspan="2" class="flight-info" style="font-size: 18px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">${sbdi} arrive ${sbden} - ${code}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="flight-time" style="font-size: 16px; color: #777; margin-bottom: 20px;">${formattedgiodiTime}, ${formattedgiodiDate} - ${formattedgiodenTime} , ${formattedgiodenDate}</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="icon-text" style="margin-right: 5px;">🛫 Cất cánh</div>
+          <div class="icon-text" style="margin-right: 5px; margin-top: 10px;"> ${sbdi} (${masbdi}) </div>
+          <p id="departure-time" style="font-size: 16px; color: #333; margin-bottom: 5px;">${formattedgiodiTime}, ${formattedgiodiDate}</p>
+        </td>
+        <td class="icon-text" style="margin-right: 5px;"> ⏰ Thời gian bay
+          <p id="flight-duration" style="font-size: 16px; color: #333; margin-bottom: 5px;">${"01:50"}</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="icon-text" style="margin-right: 5px;">🛬 Hạ cánh
+          <div class="icon-text" style="margin-right: 5px; margin-top: 10px;"> ${sbden} (${masbden})</div>
+          <p id="arrival-time" style="font-size: 16px; color: #333; margin-bottom: 5px;">${formattedgiodenTime} , ${formattedgiodenDate}</p>
+        </td>
+        <td class="icon-text" style="margin-right: 5px;">✅ Mã xác nhận 
+          <p id="confirmation-code" style="font-size: 16px; color: #333; margin-bottom: 5px;">${code}</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>`;
+
+  try {
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "luxi291000@gmail.com", // generated ethereal user
+        pass: "qoaxsitwulvmemzg", // generated ethereal password
+      },
+    });
+    let info = await transporter.sendMail({
+      from: "Airline", // sender address
+      to: `${gmail}`, // list of receivers
+      subject: `Xác nhận thanh toán.`, // Subject line
+      text: "hihi", // plain text body
+      html: html, // html body
+    });
+
+    console.log("success sentMailBuyTicketFunction");
+  } catch (error) {
+    console.log(error);
   }
 };

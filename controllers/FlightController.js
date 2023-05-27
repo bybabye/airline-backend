@@ -1,5 +1,7 @@
 import pool from "../database/connect.js";
 import { v4 as uuidv4 } from "uuid";
+import { sentMailBuyTicketFunction } from "./GmailController.js";
+import { addUserFunction } from "./UserController.js";
 
 function generateRandomString() {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -105,30 +107,95 @@ export const updateAvailableSeats = async (id, datcho) => {
 /**
  * hàm dùng để đặt chỗ
  */
-export const addAvaibleSeat = (req, res) => {
+
+export const addAvaibleSeatFunction = async (cmnd,macb) => {
+  const code = generateRandomString();
+  const query = `INSERT INTO datcho (madc,cmnd,macb,code) VALUES ('${uuidv4()}','${cmnd}','${macb}','${code}')`;
+
+  pool.query(query, async (error, results) => {
+    if (error) {
+      console.log(error);
+      
+    }
+    await updateAvailableSeats(macb, 1);
+    // console.log(ghep);
+    console.log(results);
+  });
+  return code;
+};
+export const addAvaibleSeat = async  (req, res) => {
   // thêm mới chuyến bay dành cho admin
   const data = req.body; // lấy dữ liệU từ client gửi về
-  const code = generateRandomString();
-  const query = `INSERT INTO datcho (madc,cmnd,macb,code) VALUES ('${uuidv4()}','${data.cmnd}','${data.macb}','${code}')`;
-  console.log(query);
+ 
   try {
-    pool.query(query, async (error, results) => {
-      if (error) {
-        console.log(error);
-        return res.status(403).json({ messages: "Forbidden1", error });
-      }
-      await updateAvailableSeats(data.macb, 1);
-      // console.log(ghep);
-      return res.send({
-        status: 200,
-        data: code,
-      });
-    });
+   const code =  await addAvaibleSeatFunction(data.cmnd,data.macb);
+   return res.send({
+    status: 200,
+    data: code,
+  });
   } catch (error) {
     return res.status(403).json({ messages: "Forbidden2" });
   }
 };
+/*
+{
+  "macb": "abcd-efgh-ijkl",
+  "giodi": "2023/05/24 05:00",
+  "gioden": "2023/05/24 06:50",
+  "sbdi" : "Sân bay Quốc tế Đà Nẵng",
+  "masbdi" :  "DAD",
+  "sbden" : "Sân bay Quốc tế Tân Sơn Nhấ",
+  "masbden" : "SGN",
+  "passengers": [
+    {
+      "name: "Nguyen Van A",
+      "dob": "12/2/2002",
+      "idCard": "03881112222",
+      "email": "user1@gmail.com",
+    },
+    {
+      "name: "Nguyen Thi B",
+      "dob": "12/2/2002",
+      "idCard": "03881112222",
+      "email": "user2@gmail.com",
+    }
+  ]
+}
+*/
+export const addAvaibleSeats = async (req, res) => {
+  // thêm mới chuyến bay dành cho admin
 
+  const data = req.body; // lấy dữ liệU từ client gửi về
+
+
+  try {
+    /**pass */
+    await data.passengers.forEach((person) => {
+      addUserFunction(
+        person.name,
+        person.dob,
+        person.idCard,
+        person.noicap,
+        person.quoctich,
+        person.ngonngu,
+        person.gmail
+      );
+    }); // them moi vao data
+
+
+    await data.passengers.map(async (person)  => {
+      const code = await addAvaibleSeatFunction(person.idCard,data.macb);
+      await sentMailBuyTicketFunction(code,data.giodi,data.gioden,data.sbdi,data.masbdi,data.sbden,data.masbden,person.gmail)
+    });
+    return res.send({
+      status: 200,
+      data: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(403).json({ messages: "Forbidden2" });
+  }
+};
 /*
   Thêm khách hàng 
   INSERT INTO khachhang (makh,tenkh,ngaysinh,cmnd,noicap,quoctich) VALUES ('001','Bùi Lê Huy','2000/10/29','65214809218721','Công An tỉnh Quảng trị','Việt Nam')
