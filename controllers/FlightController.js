@@ -106,7 +106,7 @@ export const updateAvailableSeats = async  (id,datcho) => {
 export const addAvaibleSeat = (req, res) => { // thêm mới chuyến bay dành cho admin
   const data = req.body; // lấy dữ liệU từ client gửi về
   const code = generateRandomString();
-  const query = `INSERT INTO datcho (madc,makh,macb,code) VALUES ('${uuidv4()}','${data.cmnd}','${data.macb}','${code}')`;
+  const query = `INSERT INTO datcho (madc,cmnd,macb,code) VALUES ('${uuidv4()}','${data.cmnd}','${data.macb}','${code}')`;
   console.log(query);
   try {
     pool.query(query, async (error, results)  => {
