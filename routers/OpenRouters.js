@@ -12,8 +12,7 @@ OpenRouter.get('/location/list',getListLocation)
 OpenRouter.post('/flight/search',searchFlight)
 OpenRouter.post('/gmail/send',sendGmailAuthencation)
 OpenRouter.post('/gmail/send/buyticket',SendMailBuyTicket)
-// OpenRouter.get('/flight/auto',addAutomatic)
-
+OpenRouter.get('/flight/auto',addAutomatic)
 
 
 export default OpenRouter;

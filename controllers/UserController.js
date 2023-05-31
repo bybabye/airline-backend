@@ -1,7 +1,7 @@
 import pool from "../database/connect.js";
 import { v4 as uuidv4 } from "uuid";
 
-export const addUserFunction = (
+export const addUserFunction = async (
   tenkh,
   ngaysinh,
   cmnd,
@@ -11,13 +11,13 @@ export const addUserFunction = (
   gmail
 ) => {
   // lấy dữ liệU từ client gửi về
-  const query = `INSERT INTO khachhang ( tenkh, ngaysinh, cmnd ,noicap,quoctich,ngonngu,gmail)
+  const query = `INSERT INTO khachhang ( tenkh, ngaysinh, cmnd ,noicap,quoctich,ngon_ngu,gmail)
     SELECT '${tenkh}', '${ngaysinh}','${cmnd}','${noicap}' , '${quoctich}','${ngonngu}','${gmail}'
     WHERE NOT EXISTS (
         SELECT 1 FROM khachhang 
         WHERE cmnd = '${cmnd}'
     );`;
-  pool.query(query, (error, results) => {
+  await pool.query(query, (error, results) => {
     if (error) {
       console.log(error);
     }

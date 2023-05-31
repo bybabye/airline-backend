@@ -170,8 +170,8 @@ export const addAvaibleSeats = async (req, res) => {
 
   try {
     /**pass */
-    await data.passengers.forEach((person) => {
-      addUserFunction(
+     data.passengers.forEach( async (person) => {
+      await addUserFunction(
         person.name,
         person.dob,
         person.idCard,
@@ -217,7 +217,7 @@ export const addAutomatic = (req, res) => {
         const q = `INSERT INTO chuyenbay (macb,masbdi,masbden,giodi,available_seats,price)
         VALUES ('${uuidv4()}','${permutation[0]}', '${
           permutation[1]
-        }' ,'2023-05-25 15:00' ,40,'1320000');`;
+        }' ,'2023-06-01 15:10',40,'1630000');`; 
         pool.query(q, (error, results) => {
           if (error) {
             console.log(error);

@@ -17,3 +17,5 @@ export const getListLocation =  (req, res) => {
     return res.status(403).json({ messages: "Forbidden2" });
   }
 };
+
+
